@@ -1,0 +1,25 @@
+{
+  "name": "twitter_clone",
+  "version": "1.0.0",
+  "description": "a simple clone of twitter backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "keywords": [
+    "twitter",
+    "clone",
+    "node.js",
+    "mongodb"
+  ],
+  "author": "pranav varshney",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "mongoose": "^7.2.2",
+    "morgan": "^1.10.0"
+  }
+}
