@@ -69,3 +69,14 @@ module.exports.signIn = (req, res, next) => {
         title: 'Sign In'
     });
 }
+
+
+//sign out
+module.exports.destroySession = (req, res, next) => {
+    //predefined function in passport
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+      });
+
+}
