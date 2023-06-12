@@ -52,6 +52,9 @@ module.exports.createSession = (req, res, next) => {
 
 //sign up page
 module.exports.signUp = (req, res, next) => {
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     res.render('user_sign_up',{
         title: 'Sign Up'
     });
@@ -59,6 +62,9 @@ module.exports.signUp = (req, res, next) => {
 
 //sign in page
 module.exports.signIn = (req, res, next) => {
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     res.render('user_sign_in', {
         title: 'Sign In'
     });
