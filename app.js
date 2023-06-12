@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+const MongoStore = require('connect-mongo')(session);
 
 app.use(express.urlencoded({extended:false}));
 // app.use(bodyParser.urlencoded({extended: false})); //true allows me to parse extended bodies with rich data in it
@@ -45,7 +46,15 @@ app.use(session({
     resave: false,
     cookie: {
         maxAge: (1000 * 60 * 100) //100min
+    },
+    store: new MongoStore({
+        mongooseConnection: db,
+        autoRemove: "disabled",
+    },
+    (err) => {
+        if(err) console.log("error in MongoStore setup", err);
     }
+    )
 }));
 app.use(passport.initialize());
 app.use(passport.session());
