@@ -1,0 +1,23 @@
+header {
+  background-color: #5252e0;
+  color: white;
+  border: 1px solid black;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  padding: 5px; }
+  header h2 {
+    margin: 0px; }
+  header ul {
+    margin: 0px;
+    display: flex;
+    flex-flow: row nowrap;
+    width: 200px;
+    justify-content: space-around; }
+    header ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: larger; }
+      header ul li a:hover {
+        color: lightblue;
+        text-decoration: underline; }

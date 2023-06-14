@@ -19,6 +19,14 @@ app.use(express.urlencoded({extended:false}));
 
 const homeRoutes = require('./routes/home');
 
+//setting up sass/scss
+app.use(sassMiddleware({
+    src: './assets/scss',
+    dest: './assets/css',
+    // debug: true,
+    outputStyle: 'extended', 
+    prefix: '/css'
+}));
 //telling location of static files (all files in views will be linked relative to this path)
 app.use(express.static('./assets'));
 
@@ -64,14 +72,7 @@ app.use(passport.session());
 app.use(passport.setAuthenticatedUser); // now locals.user can be used in views
 
 
-//setting up sass/scss
-app.use(sassMiddleware({
-    src: './assets/scss',
-    dest: './assets/css',
-    // debug: true,
-    outputStyle: 'extended', 
-    prefix: '/css'
-}));
+
 
 
 app.use('/', homeRoutes);

@@ -1,0 +1,22 @@
+footer{
+    background-color: grey;
+    color: white;
+    // border: 1px solid black;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: baseline;
+    p{
+        font-size: larger;
+    }
+    a{
+        margin-left: 100px;
+        font-size: larger;
+        text-decoration: none;
+        color: white;
+        &:hover{
+            color: lightgrey;
+            text-decoration: underline;
+        }
+    }
+}
