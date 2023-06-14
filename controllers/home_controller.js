@@ -13,10 +13,14 @@ module.exports.home = function(req, res, next){
             }
         })
         .exec()
-        .then(posts => {
+        .then(async posts => {
+
+            let users = await User.find();
+
             return res.render('home', {
                 title: 'home', 
-                posts: posts
+                posts: posts,
+                all_users: users
             });
         })
         .catch(err => {

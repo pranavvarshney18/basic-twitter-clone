@@ -1,9 +1,19 @@
 const User = require('../models/user');
 
 module.exports.profile = (req, res, next) => {
-    return res.render('user_profile', {
-        title: "Profile"
-    });
+    User.findById(req.params.id)
+        .exec()
+        .then(user => {
+            return res.render('user_profile', {
+                title: "Profile",
+                profile_user: user    //we would avoid using "user" as a key as it is already a global variable as locals.user
+            });
+        })
+        .catch(err => {
+            console.log('unable to fetch user info', err);
+            return res.redirect('back');
+        });
+    
 };
 
 //to create new user
