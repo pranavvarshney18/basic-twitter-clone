@@ -4,3 +4,16 @@
 
 <p> <%= profile_user.name %></p>
 <p> <%= profile_user.email %></p>
+
+
+<!-- if user is signed in, it should be able to update its profile -->
+<h4>Update Details</h4>
+<% if(locals.user.id == profile_user.id){ %>
+    <form action="/users/update/<%=profile_user.id%>" method="POST">
+        <label for="">Name</label> &nbsp;
+        <input type="text" name="name" value="<%=profile_user.name%>" placeholder="<%=profile_user.name%>"> <br>
+        <label for="">Email</label> &nbsp;
+        <input type="email" name="email" value="<%=profile_user.email%>" placeholder="<%=profile_user.email%>"> <br>
+        <button type="submit">Update</button>
+    </form>
+<% } %>

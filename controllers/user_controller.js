@@ -90,3 +90,19 @@ module.exports.destroySession = (req, res, next) => {
       });
 
 }
+
+
+//update user
+module.exports.update = (req, res, next) => {
+    if(req.user.id == req.params.id){
+        User.findByIdAndUpdate(req.params.id, req.body)
+            .exec()
+            .then(updatedUser => {
+                return res.redirect('back');
+            })
+            .catch(err => {
+                console.log('error in updating user profile', err);
+                return res.status(401).send('Unauthorised');
+            })
+    }
+}
