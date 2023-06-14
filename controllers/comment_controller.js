@@ -1,4 +1,4 @@
-const e = require('express');
+const express = require('express');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 
@@ -65,6 +65,52 @@ module.exports.destroy = (req, res, next) => {
         })
         .catch(err => {
             console.log('error in fetching the required comment', err);
+            return res.redirect('back');
+        })
+}
+
+
+
+
+//delete comment by post creator
+module.exports.destoryByPostUser = (req, res, next) => {
+    Comment.findById(req.params.id)
+        .exec()
+        .then(comment => {
+            if(!comment){
+                console.log('this comment does not exist');
+                return res.redirect('back');
+            }
+
+            Post.findById(comment.post)
+                .exec()
+                .then(post => {
+                    if(post && req.user.id == post.user){
+                        let postId = post.id;
+                        comment.deleteOne();
+                        Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}})
+                            .exec()
+                            .then(updatedPost => {
+                                return res.redirect('back');
+                            })
+                            .catch(err => {
+                                console.log('error in deleting the comment id from its post array', err);
+                                return res.redirect('back');
+                            })
+                    }
+                    else{
+                        console.log("comment's post does not exist");
+                        return res.redirect('back');
+                    }
+                })
+                .catch(err => {
+                    console.log('error in finding the respective post for this comment', err);
+                    return res.redirect('back');
+                })
+
+        })
+        .catch(err => {
+            console.log('error in finding the requried comment', err);
             return res.redirect('back');
         })
 }
