@@ -1,3 +1,4 @@
+const e = require('express');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 
@@ -30,6 +31,40 @@ module.exports.create = (req, res, next) => {
         })
         .catch(err => {
             console.log('error in finding the desired post for this comment', err);
+            return res.redirect('back');
+        })
+}
+
+
+
+
+//delete comment
+module.exports.destroy = (req, res, next) => {
+    Comment.findById(req.params.id)
+        .exec()
+        .then(comment => {
+            if(comment && comment.user == req.user.id){
+                let postId = comment.post;
+                comment.deleteOne();
+
+                //delete comment from its post array
+                Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}})
+                    .exec()
+                    .then(post => {
+                        return res.redirect('back');
+                    })
+                    .catch(err => {
+                        console.log('error in removing the id of comment from its post array', err);
+                        return res.redirect('back');
+                    })
+            }
+            else{
+                console.log('this comment does not exist');
+                return res.redirect('back');
+            }
+        })
+        .catch(err => {
+            console.log('error in fetching the required comment', err);
             return res.redirect('back');
         })
 }
