@@ -23,6 +23,7 @@ module.exports.home = async function(req, res, next){
         });
     }
     catch(err){
+        req.flash('error', 'error in fetching the posts');
         console.log('error in fetching all the posts', err);
         return res.end('<h4>page is not working properly</h4>');
     }

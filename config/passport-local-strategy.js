@@ -5,13 +5,15 @@ const User = require('../models/user');
 //authentication using passport 
 passport.use(new LocalStrategy({
     usernameField: 'email',
+    passReqToCallback: true, //this allow us to set the first argument of the below function as 'req', helping us to use 'req.flash()'
     },
-    function(email, password, done){
+    function(req, email, password, done){
         User.findOne({email: email})
             .exec()
             .then(user => {
                 // console.log(user);
                 if(!user || user.password != password){
+                    req.flash('error', 'Invalid credentials');
                     console.log('Invalid credentials');
                     return done(null, false);
                 }
@@ -19,6 +21,7 @@ passport.use(new LocalStrategy({
                 return done(null, user);
             })
             .catch(err => {
+                req.flash('error', 'error in finding user');
                 console.log('error in finding user --> Passport', err);
                 return done(err);
             })
