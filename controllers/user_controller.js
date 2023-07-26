@@ -17,39 +17,31 @@ module.exports.profile = (req, res, next) => {
 };
 
 //to create new user
-module.exports.create = (req, res, next) =>{
-    //check if password and confirm password are same 
-    if(req.body.password != req.body["confirm-password"]){
-        console.log('password and confirm password are not matching');
-        return res.redirect('back');
-    }
-    // console.log('body', req.body);
-    //check if the email is unique
-    User.findOne({email: req.body.email})
-    .exec()
-    .then(user => {
-        
-        if(!user){
-            //create user
-            User.create(req.body)
-                .then(newUser => {
-                    console.log('new user created', newUser);
-                    return res.redirect('/users/sign-in');
-                })
-                .catch(err => {
-                    console.log('error in creating new user', err);
-                    return res.redirect('back');
-                })
+module.exports.create = async (req, res, next) => {
+    try{
+        //check if password and confirm password are same
+        if(req.body.password != req.body["confirm-password"]){
+            console.log('password and confirm password are not matching');
+            return res.redirect('back');
         }
-        else{
+
+        let user = await User.findOne({email: req.body.email});
+
+        if(user){
             console.log('This user already exists');
             return res.redirect('back');
         }
-    })
-    .catch(err => {
-        console.log('error in creating new user');
+        else{
+            //create new user
+            let newUser = await User.create(req.body);
+            console.log('New user created !!!', newUser);
+            return res.redirect('/users/sign-in');
+        }
+    }
+    catch(err){
+        console.log('error in creating new user', err);
         return res.redirect('back');
-    })
+    }
 }
 
 

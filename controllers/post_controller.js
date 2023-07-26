@@ -2,47 +2,42 @@ const Post = require('../models/post');
 const Comment = require('../models/comment');
 
 //create a new post
-module.exports.create = (req, res, next) => {
-    Post.create({
-        content : req.body.content,
-        user: req.user._id
-    })
-    .then(newPost => {
+module.exports.create = async (req, res, next) => {
+    try{
+        let newPost = await Post.create({
+            content: req.body.content,
+            user: req.user._id
+        });
         console.log('new post created');
-        res.redirect('back');
-    })
-    .catch(err => {
-        console.log('error in creating new post ', err);
-        res.redirect('back');
-    })
-};
+        return res.redirect('back');
+    }
+    catch(err){
+        console.log('error in creating new post', err);
+        return res.redirect('back');
+    }
+}
 
 
 //delete post
-module.exports.destroy = (req, res, next) => {
-    Post.findById(req.params.id)
-        .exec()
-        .then(post => {
-            if(post && post.user == req.user.id){
-                post.deleteOne();
+module.exports.destroy = async (req, res, next) => {
+    try{
+        let post = await Post.findById(req.params.id);
+        if(post && post.user == req.user.id){
+            await post.deleteOne();
 
-                Comment.deleteMany({post: req.params.id})
-                    .then(deletedCount => {
-                        return res.redirect('back');
-                    })
-                    .catch(err => {
-                        console.log('error in deleting related comments for this post', err);
-                        return res.redirect('back');
-                    })
-                        
-            }
-            else {
-                console.log('unable to delete post');
-                return res.redirect('back');
-            }
-        })
-        .catch(err => {
-            console.log('error in finding the required post for deletion', err);
+            //delete all the comments related to post
+            let deletedCommentsCount = await Comment.deleteMany({post: req.params.id});
+            console.log('post and its related comments deleted !!!');
+            console.log(deletedCommentsCount);
             return res.redirect('back');
-        })
+        }
+        else{
+            console.log('unable to delete post');
+            return res.redirect('back');
+        }
+    }
+    catch(err){
+        console.log('error in deleting post', err);
+        return res.redirect('back');
+    }
 }
