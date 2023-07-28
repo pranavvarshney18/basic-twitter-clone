@@ -8,8 +8,17 @@ module.exports.create = async (req, res, next) => {
             content: req.body.content,
             user: req.user._id
         });
-        req.flash('success', 'New post created !!!');
         console.log('new post created');
+        //checking for ajax request
+        if(req.xhr){
+            return res.status(200).json({
+                data: {
+                    post: newPost
+                },
+                message: "Post created!!"
+            })
+        }
+        req.flash('success', 'New post created !!!');
         return res.redirect('back');
     }
     catch(err){

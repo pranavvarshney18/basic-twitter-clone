@@ -1,27 +1,29 @@
 <% for(post of posts){ %>
-    <p><li>
-        <!-- option to delete post  -->
-        <% if(locals.user && locals.user.id == post.user.id){ %>
-            <small><a href="/posts/destroy/<%=post.id%>">X</a></small>
-        <% } %>
-        
-        <%= post.content %>
-        <br>
-        <%= post.user.name %>
-    </li></p>
+    <li id="post-<%=post._id%>">
+        <p>
+            <!-- option to delete post  -->
+            <% if(locals.user && locals.user.id == post.user.id){ %>
+                <small><a class="delete-post-button" href="/posts/destroy/<%=post.id%>">X</a></small>
+            <% } %>
+            
+            <%= post.content %>
+            <br>
+            <small><%= post.user.name %></small>
+        </p>
 
-    <div class="post-comments">
-        <% if(locals.user){ %>
-        <form action="/comments/create" method="POST">
-            <input type="text" name="content" placeholder="add comment.." required>
-            <input type="hidden" name="post" value="<%= post._id %>">
-            <button type="submit">Submit</button>
-        </form>
-        <% } %>
+        <div class="post-comments">
+            <% if(locals.user){ %>
+            <form action="/comments/create" method="POST">
+                <input type="text" name="content" placeholder="add comment.." required>
+                <input type="hidden" name="post" value="<%= post._id %>">
+                <button type="submit">Submit</button>
+            </form>
+            <% } %>
 
-        <!-- to view comments  -->
-        <div class="post-comments-list">
-            <%- include('_comment.ejs'); %>
+            <!-- to view comments  -->
+            <div class="post-comments-list">
+                <%- include('_comment.ejs'); %>
+            </div>
         </div>
-    </div>
+    </li>
 <% } %>
