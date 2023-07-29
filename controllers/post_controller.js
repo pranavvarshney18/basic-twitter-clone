@@ -11,6 +11,7 @@ module.exports.create = async (req, res, next) => {
         console.log('new post created');
         //checking for ajax request
         if(req.xhr){
+            newPost = await newPost.populate('user', 'name');
             return res.status(200).json({
                 data: {
                     post: newPost
@@ -38,9 +39,19 @@ module.exports.destroy = async (req, res, next) => {
 
             //delete all the comments related to post
             let deletedCommentsCount = await Comment.deleteMany({post: req.params.id});
-            req.flash('success', 'post and its related comments deleted !!!');
             console.log('post and its related comments deleted !!!');
             console.log(deletedCommentsCount);
+            console.log(req.xhr);
+            if(req.xhr){
+                console.log('entered ', req.xhr);
+                return res.status(200).json({
+                    data: {
+                        post_id: req.params.id
+                    },
+                    message: 'Post deleted'
+                });
+            }
+            req.flash('success', 'post and its related comments deleted !!!');
             return res.redirect('back');
         }
         else{
