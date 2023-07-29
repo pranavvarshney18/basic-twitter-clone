@@ -83,5 +83,13 @@
         })
     }
 
+    let makeAllPostDynamicForDeletion = function(){
+        let allPosts = $('.delete-post-button');
+        for(post of allPosts){
+            deletePost(post);
+        }
+    }
+
+    makeAllPostDynamicForDeletion();
     createPost();
 }
