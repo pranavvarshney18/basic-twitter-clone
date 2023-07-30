@@ -20,9 +20,20 @@ module.exports.create = async (req, res, next) => {
 
         post.comments.push(newComment._id);
         await post.save();
+
+        console.log('new comment created !!!');
+
+        // console.log(req.xhr);
+        if(req.xhr){ 
+            return res.status(200).json({
+                data: {
+                    comment: newComment
+                },
+                message: 'comment created!'
+            });
+        }
         
         req.flash('success', 'New comment created !!!');
-        console.log('new comment created !!!');
         return res.redirect('back');
     }
     catch(err){

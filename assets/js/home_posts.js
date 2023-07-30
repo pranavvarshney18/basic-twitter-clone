@@ -15,6 +15,9 @@
                     $('#post-list-container>ul').prepend(newPost);
                     deletePost($(' .delete-post-button', newPost));
 
+                    //call PostComment class
+                    new PostComments(data.data.post._id);
+                    
                     //add flash message
                     new Noty({
                         theme: 'relax',
@@ -44,7 +47,7 @@
                 </p>
 
                 <div class="post-comments">
-                    <form action="/comments/create" method="POST">
+                    <form action="/comments/create" id="new-${post._id}-comments-form" method="POST">
                         <input type="text" name="content" placeholder="add comment.." required>
                         <input type="hidden" name="post" value="${post._id}">
                         <button type="submit">Submit</button>
@@ -52,7 +55,9 @@
 
                     <!-- to view comments  -->
                     <div class="post-comments-list">
+                        <ul id="post-comments-${post._id}">
                         
+                        </ul>
                     </div>
                 </div>
             </li>
