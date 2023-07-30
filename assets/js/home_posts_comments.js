@@ -21,6 +21,15 @@ class PostComments{
 
                     //call to delete comment
                     self.deleteComment($(' .delete-comment-button', newComment));
+
+                    //add flash message
+                    new Noty({
+                        theme: 'mint',
+                        text: 'new comment created',
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500,
+                    }).show();
                 },
                 error: function(err){
                     console.log(err.responseText);
@@ -53,6 +62,14 @@ class PostComments{
                 url: $(deleteLink).prop('href'),
                 success: function(data){
                     $(`#comment-${data.data.comment_id}`).remove();
+
+                    new Noty({
+                        theme: 'mint',
+                        text: 'Comment deleted',
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500
+                    }).show();
                 },
                 error: function(err){
                     console.log(err.responseText);
