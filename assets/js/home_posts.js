@@ -88,13 +88,17 @@
         })
     }
 
-    let makeAllPostDynamicForDeletion = function(){
+    let makeAllPostDynamic = function(){
         let allPosts = $('.delete-post-button');
         for(post of allPosts){
             deletePost(post);
+            
+            //convert all comments to ajax
+            let postId = $(post).attr('href').split('/')[3];
+            new PostComments(postId);
         }
     }
 
-    makeAllPostDynamicForDeletion();
+    makeAllPostDynamic();
     createPost();
 }
