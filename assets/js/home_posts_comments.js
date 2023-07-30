@@ -5,6 +5,15 @@ class PostComments{
         this.newCommentForm = $(`#new-${postId}-comments-form`);
         
         this.createComment(postId);
+
+
+        //call all existing comments for dynamic deletion
+        //we know this constructor will be called for all existing posts at home_posts.js -> makeAllPostsDynamic()
+        let self = this;
+        this.postContainer = $(`#post-${postId}`);
+        $(' .delete-comment-button', this.postContainer).each(function(){
+            self.deleteComment($(this));
+        });
     }
 
     createComment(postId){
