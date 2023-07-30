@@ -41,9 +41,9 @@ module.exports.destroy = async (req, res, next) => {
             let deletedCommentsCount = await Comment.deleteMany({post: req.params.id});
             console.log('post and its related comments deleted !!!');
             console.log(deletedCommentsCount);
-            console.log(req.xhr);
+            // console.log(req.xhr);
             if(req.xhr){
-                console.log('entered ', req.xhr);
+                // console.log('entered ', req.xhr);
                 return res.status(200).json({
                     data: {
                         post_id: req.params.id

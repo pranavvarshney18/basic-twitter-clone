@@ -18,6 +18,9 @@ class PostComments{
                 success: function(data){
                     let newComment = self.newCommentDom(data.data.comment);
                     $(`#post-comments-${postId}`).prepend(newComment);
+
+                    //call to delete comment
+                    self.deleteComment($(' .delete-comment-button', newComment));
                 },
                 error: function(err){
                     console.log(err.responseText);
@@ -39,5 +42,22 @@ class PostComments{
             </p>
         </li>
         `);
+    }
+
+
+    deleteComment(deleteLink){
+        $(deleteLink).click(function(e){
+            e.preventDefault();
+            $.ajax({
+                type: 'get',
+                url: $(deleteLink).prop('href'),
+                success: function(data){
+                    $(`#comment-${data.data.comment_id}`).remove();
+                },
+                error: function(err){
+                    console.log(err.responseText);
+                }
+            })
+        });
     }
 }

@@ -25,6 +25,7 @@ module.exports.create = async (req, res, next) => {
 
         // console.log(req.xhr);
         if(req.xhr){ 
+            newComment = await newComment.populate('user', 'name');
             return res.status(200).json({
                 data: {
                     comment: newComment
@@ -56,8 +57,17 @@ module.exports.destroy = async (req, res, next) => {
 
             //delete comment from its post array
             await Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}});
-            req.flash('success', 'Comment deleted !!!');
             console.log('comment deleted !!!');
+            // console.log(req.xhr);
+            if(req.xhr){
+                return res.status(200).json({
+                    data: {
+                        comment_id: req.params.id
+                    },
+                    message: 'Comment deleted'
+                });
+            }
+            req.flash('success', 'Comment deleted !!!');
             return res.redirect('back');
         }
         else{
