@@ -6,7 +6,7 @@
                 <% if(locals.user && locals.user.id == comment.user.id){ %>
                     <small><a href="/comments/destroy/<%=comment._id%>" class="delete-comment-button">X</a></small>
                 <% }else if(locals.user && locals.user.id == post.user.id){ %>
-                    <small><a href="/comments/destroy-by-post-user/<%=comment._id%>">X</a></small>
+                    <small><a href="/comments/destroy-by-post-user/<%=comment._id%>" class="delete-comment-button-by-post-user">X</a></small>
                 <% } %>
     
                 <%= comment.content %> <br>

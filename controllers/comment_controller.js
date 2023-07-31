@@ -101,8 +101,18 @@ module.exports.destoryByPostUser = async (req, res, next) => {
             await comment.deleteOne();
 
             await Post.findByIdAndUpdate(postId, {$pull:{comments: req.params.id}});
-            req.flash('success', 'comment deleted !!!');
             console.log('comment deleted !!!');
+
+            if(req.xhr){
+                return res.status(200).json({
+                    data: {
+                        comment_id: req.params.id
+                    },
+                    message: "Comment deleted"
+                });
+            }
+
+            req.flash('success', 'comment deleted !!!');
         }
         else {
             req.flash('error', 'permission denied');

@@ -14,6 +14,9 @@ class PostComments{
         $(' .delete-comment-button', this.postContainer).each(function(){
             self.deleteComment($(this));
         });
+        $(' .delete-comment-button-by-post-user', this.postContainer).each(function(){
+            self.deleteComment($(this));
+        })
     }
 
     createComment(postId){
