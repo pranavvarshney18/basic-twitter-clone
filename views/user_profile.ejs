@@ -9,11 +9,13 @@
 <!-- if user is signed in, it should be able to update its profile -->
 <% if(locals.user.id == profile_user.id){ %>
     <h4>Update Details</h4>
-    <form action="/users/update/<%=profile_user.id%>" method="POST">
+    <form action="/users/update/<%=profile_user.id%>" enctype="multipart/form-data" method="POST">
         <label for="">Name</label> &nbsp;
         <input type="text" name="name" value="<%=profile_user.name%>" placeholder="<%=profile_user.name%>"> <br>
         <label for="">Email</label> &nbsp;
         <input type="email" name="email" value="<%=profile_user.email%>" placeholder="<%=profile_user.email%>"> <br>
+        <label for="">Profile Picture</label> &nbsp;
+        <input type="file" name="avatar" placeholder="upload pic"> <br>
         <button type="submit">Update</button>
     </form>
 <% } %>

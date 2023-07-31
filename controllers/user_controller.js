@@ -92,18 +92,48 @@ module.exports.destroySession = (req, res, next) => {
 
 
 //update user
-module.exports.update = (req, res, next) => {
-    if(req.user.id == req.params.id){
-        User.findByIdAndUpdate(req.params.id, req.body)
-            .exec()
-            .then(updatedUser => {
-                req.flash('success', 'profile updated successfully');
+// module.exports.update = (req, res, next) => {
+//     if(req.user.id == req.params.id){
+//         User.findByIdAndUpdate(req.params.id, req.body)
+//             .exec()
+//             .then(updatedUser => {
+//                 req.flash('success', 'profile updated successfully');
+//                 return res.redirect('back');
+//             })
+//             .catch(err => {
+//                 req.flash('error', 'error in updating user profile');
+//                 console.log('error in updating user profile', err);
+//                 return res.status(401).send('Unauthorised');
+//             })
+//     }
+// }
+module.exports.update = async (req, res, next) =>{
+    if(req.user.id = req.params.id){
+        try{
+            let user = await User.findById(req.params.id);
+
+            User.uploadedAvatar(req, res, function(err){
+                if(err) {console.log('****Multer Error: ', err);}
+
+                user.name = req.body.name;
+                user.email = req.body.email;
+                if(req.file){
+                    //save the path of file into avatar field of schema
+                    user.avatar = User.avatarPath + '/' + req.file.filename;
+                }
+                user.save();
                 return res.redirect('back');
             })
-            .catch(err => {
-                req.flash('error', 'error in updating user profile');
-                console.log('error in updating user profile', err);
-                return res.status(401).send('Unauthorised');
-            })
+
+        }
+        catch(err){
+            req.flash('error in updating credentials ', err);
+            console.log('error in updating credentials ', err);
+            return res.redirect('back');
+        }
+    }
+    else{
+        req.flash('error', 'Unauthorized!!');
+        return res.status(401).send("Unauthorised");
     }
 }
