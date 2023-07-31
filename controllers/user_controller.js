@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const fs = require('fs');
+const path = require('path');
 
 module.exports.profile = (req, res, next) => {
     User.findById(req.params.id)
@@ -118,6 +120,9 @@ module.exports.update = async (req, res, next) =>{
                 user.name = req.body.name;
                 user.email = req.body.email;
                 if(req.file){
+                    if(user.avatar){ //to delete previously existing file
+                        fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+                    }
                     //save the path of file into avatar field of schema
                     user.avatar = User.avatarPath + '/' + req.file.filename;
                 }

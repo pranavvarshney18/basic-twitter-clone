@@ -43,6 +43,9 @@ app.set('layout extractScripts', true);
 //telling express to use cookie parser
 app.use(cookieParser());
 
+//make the uploads path visible to browser
+app.use('/uploads', express.static(__dirname + '/uploads'));
+
 
 //set up view engine
 app.set('view engine', 'ejs');
