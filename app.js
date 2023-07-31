@@ -13,6 +13,8 @@ const MongoStore = require('connect-mongo')(session);
 const sassMiddleware = require('node-sass-middleware');
 const flash = require('connect-flash');
 const customMware = require('./config/middleware');
+const passportGoogle = require('./config/passport-google-oauth2-strategy');
+
 
 app.use(express.urlencoded({extended:false}));
 // app.use(bodyParser.urlencoded({extended: false})); //true allows me to parse extended bodies with rich data in it

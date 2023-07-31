@@ -22,5 +22,10 @@ router.get('/sign-out', userController.destroySession);
 
 
 
+//click on google sign in and data is fetched from there
+router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+//google fetches the data and sends back to server
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/sign-in'}), userController.createSession);
+
 
 module.exports = router;
