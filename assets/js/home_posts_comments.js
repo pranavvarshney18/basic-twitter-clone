@@ -33,6 +33,8 @@ class PostComments{
 
                     //call to delete comment
                     self.deleteComment($(' .delete-comment-button', newComment));
+                    //call likes functionality
+                    new ToggleLike($(' .toggle-like-button', newComment));
 
                     //add flash message
                     new Noty({
@@ -60,6 +62,14 @@ class PostComments{
 
                 ${ comment.content} <br>
                 <small> ${comment.user.name }</small>
+                <br>
+                <small>
+                   
+                        <a href="/likes/toggle?id=${comment._id}&type=Comment" class="toggle-like-button" data-likes="0">
+                            0 Likes
+                        </a>
+
+                </small>
             </p>
         </li>
         `);

@@ -13,8 +13,12 @@ module.exports.home = async function(req, res, next){
                             populate: {
                                 path: 'user'
                             },
+                            populate:{
+                                path: 'likes'
+                            },
                             options: {sort: '-createdAt'}
-                        });
+                        })
+                        .populate('likes');
 
         let users = await User.find();
 

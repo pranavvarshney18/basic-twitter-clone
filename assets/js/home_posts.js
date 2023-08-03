@@ -17,6 +17,8 @@
 
                     //call PostComment class
                     new PostComments(data.data.post._id);
+                    //call likes functionality
+                    new ToggleLike($(' .toggle-like-button', newPost));
                     
                     //add flash message
                     new Noty({
@@ -37,6 +39,8 @@
     //method to show post at home page
     let newPostDom = function(post){
         return $(`
+	        <script src="https://kit.fontawesome.com/608e013bb3.js" crossorigin="anonymous"></script>
+
             <li id="post-${post._id}"> 
                 <p>
                     <small><a class="delete-post-button" href="/posts/destroy/${post._id}">X</a></small>
@@ -44,6 +48,15 @@
                     ${post.content}
                     <br>
                     <small>${post.user.name}</small>
+                    <br>
+                    <small>
+                   
+                            <a href="/likes/toggle?id=${post._id}&type=Post" class="toggle-like-button" data-likes="0">
+                                0 Likes
+                            </a>
+
+                    </small>
+
                 </p>
 
                 <div class="post-comments">

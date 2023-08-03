@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
+const Like = require('../models/like');
 
 //create a new post
 module.exports.create = async (req, res, next) => {
@@ -34,9 +35,16 @@ module.exports.create = async (req, res, next) => {
 module.exports.destroy = async (req, res, next) => {
     try{
         let post = await Post.findById(req.params.id);
-        if(post && post.user == req.user.id){
-            await post.deleteOne();
 
+        if(post && post.user == req.user.id){
+            //delete related likes of post as well as comments
+            await Like.deleteMany({likeable: post._id, onModel: 'Post'});
+            for(commentId of post.comments){
+                await Like.deleteMany({likeable: commentId, onModel: 'Comment'});
+            }
+
+            await post.deleteOne();
+            
             //delete all the comments related to post
             let deletedCommentsCount = await Comment.deleteMany({post: req.params.id});
             console.log('post and its related comments deleted !!!');

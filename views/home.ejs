@@ -37,6 +37,16 @@
 <script src="/js/home_posts_comments.js"></script>
 <script src="/js/home_posts.js"></script>
 
+<!-- for likes functionality  -->
+<script src="/js/toggle_likes.js"></script>
+<script>
+    $('.toggle-like-button').each(function(){
+        let self = this;
+        new ToggleLike(self);
+    });
+</script>
+
+
 
 
 

@@ -1,6 +1,8 @@
 const express = require('express');
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const Like = require('../models/like');
+const commentsMailer = require('../mailers/comments_mailer');
 
 //create new comment
 module.exports.create = async (req, res, next) => {
@@ -23,9 +25,10 @@ module.exports.create = async (req, res, next) => {
 
         console.log('new comment created !!!');
 
+        newComment = await newComment.populate('user', 'name email');
+        // commentsMailer.newComment(newComment);
         // console.log(req.xhr);
         if(req.xhr){ 
-            newComment = await newComment.populate('user', 'name');
             return res.status(200).json({
                 data: {
                     comment: newComment
@@ -52,6 +55,9 @@ module.exports.destroy = async (req, res, next) => {
     try{
         let comment = await Comment.findById(req.params.id);
         if(comment && comment.user == req.user.id){
+            //delete related likes for comment
+            await Like.deleteMany({likeable: comment._id, onModel: 'Comment'});
+
             let postId = comment.post;
             await comment.deleteOne();
 
@@ -97,6 +103,9 @@ module.exports.destoryByPostUser = async (req, res, next) => {
         }
         let post = await Post.findById(comment.post);
         if(post && post.user == req.user.id){
+            //delete related likes for comment 
+            await Like.deleteMany({likeable: comment._id, onModel: 'Comment'});
+
             let postId = comment.post;
             await comment.deleteOne();
 
