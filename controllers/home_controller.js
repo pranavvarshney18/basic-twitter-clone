@@ -21,11 +21,19 @@ module.exports.home = async function(req, res, next){
                         .populate('likes');
 
         let users = await User.find();
+        
+        //to get friends of signed in user
+        let profile_user = null;
+        if(req.user){
+            profile_user = await User.findById(req.user.id)
+                            .populate('friends', 'name');
+        }
 
         return res.render('home', {
             title: 'home',
             posts: posts,
-            all_users: users
+            all_users: users,
+            profile_user: profile_user
         });
     }
     catch(err){

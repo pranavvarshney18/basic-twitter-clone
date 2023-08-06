@@ -6,6 +6,13 @@
 <p> <%= profile_user.name %></p>
 <p> <%= profile_user.email %></p>
 
+<!-- add or remove friend  -->
+<% if(locals.user.id && locals.user.id != profile_user.id){ %>
+    <form action="/friendships/add-remove-friend/<%= profile_user._id %>" method="POST" class="toggle-friendship-button">
+        <button type="submit"> <%= friend_button_content %></button>
+    </form>
+<% } %>
+
 
 <!-- if user is signed in, it should be able to update its profile -->
 <% if(locals.user.id == profile_user.id){ %>
@@ -20,3 +27,14 @@
         <button type="submit">Update</button>
     </form>
 <% } %>
+
+
+
+
+<script src='/js/profile_for_friends.js'></script>
+<script>
+    $('.toggle-friendship-button').each(function(){
+        let self = this;
+        new ToggleFriendship(self);
+    });
+</script>

@@ -20,7 +20,11 @@ let userSchema = new mongoose.Schema({
     },
     avatar:{
         type: String //to store path of the file
-    }
+    },
+    friends:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 },{
     timestamps: true
 });

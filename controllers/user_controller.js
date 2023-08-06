@@ -2,20 +2,37 @@ const User = require('../models/user');
 const fs = require('fs');
 const path = require('path');
 
-module.exports.profile = (req, res, next) => {
-    User.findById(req.params.id)
-        .exec()
-        .then(user => {
-            return res.render('user_profile', {
-                title: "Profile",
-                profile_user: user    //we would avoid using "user" as a key as it is already a global variable as locals.user
-            });
-        })
-        .catch(err => {
-            req.flash('error', 'unable to fetch user info');
-            console.log('unable to fetch user info', err);
-            return res.redirect('back');
+module.exports.profile = async (req, res, next) => {
+    try{
+        let user = await User.findById(req.params.id);
+        if(!user){
+            console.log('user not found');
+            return res.end('<h1> No such user exists </h1>');
+        }
+
+        let friend = false;
+        for(personId of user.friends){
+            if(personId == req.user.id){
+                friend = true;
+                break;
+            }
+        }
+
+        let buttonForFriend = 'Add as Friend';
+        if(friend){
+            buttonForFriend = 'Remove from friend';
+        }
+
+        return res.render('user_profile', {
+            title: "Profile",
+            profile_user: user,    //we would avoid using "user" as a key as it is already a global variable as locals.user
+            friend_button_content: buttonForFriend
         });
+    }   
+    catch(err){
+        console.log('error in loading profile page ', err);
+        return res.end('<h1> Internal server error, we are sorry for your inconvenience </h1>')
+    }
     
 };
 

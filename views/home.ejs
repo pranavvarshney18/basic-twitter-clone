@@ -2,6 +2,13 @@
 
 <div id="home-container">
     
+    <div id="user-related-functions">
+        <% if(locals.user){ %>
+            <img src="<%=user.avatar%>" alt="<%=user.name%>"><br>
+            <h4> <%= user.name %></h4>
+            <h5><%= user.email %></h5>
+        <% } %>
+    </div>
 
     <section id="feed-posts">
         <h4>Posts</h4>
@@ -25,10 +32,23 @@
 
     <!-- user friends  -->
     <section id="user-friends">
-            <h4>Friends</h4>
-            <% for(u of all_users){ %>
-                <p><a href="users/profile/<%=u.id%>"> <%=u.name%> </a></p>
+            <% if(locals.user){ %>
+                <div id="friends-list">
+                    <h4>Friends</h4>
+                    <% if(profile_user != null){ %>
+                        <% for(friend of profile_user.friends){ %>
+                            <p><a href="users/profile/<%=friend._id%>"> <%=friend.name%> </a></p>
+                        <% } %>
+                    <% } %>
+                </div>
             <% } %>
+
+            <div id="users-list">
+                <h4>Users</h4>
+                <% for(u of all_users){ %>
+                    <p><a href="users/profile/<%=u.id%>"> <%=u.name%> </a></p>
+                <% } %>
+            </div>
     </section>
 
 </div>

@@ -1,14 +1,31 @@
 #home-container{
     display: flex;
-    #feed-posts{
-        width: 70%;
+    #user-related-functions{
+        width: 25%;
         padding: 10px;
+        border-right: 1px solid lightgrey;
+        text-align: center;
+
+        img{
+            width: 70%;
+        }
+    }
+    #feed-posts{
+        width: 45%;
+        padding-left: 5%;
+        padding-right: 5%;
     }
     #user-friends{
+        display: flex;
+        flex-direction: column;
         width: 30%;
         padding: 10px;
         text-align: center;
         border-left: 1px solid lightgrey;
         min-height: 100vh;
+
+        #friends-list{
+            border-bottom: 1px solid lightgrey;
+        }
     }
 }
