@@ -1,7 +1,7 @@
 #home-container{
     display: flex;
     #user-related-functions{
-        width: 25%;
+        width: 20%;
         padding: 10px;
         border-right: 1px solid lightgrey;
         text-align: center;
@@ -11,16 +11,17 @@
         }
     }
     #feed-posts{
-        width: 45%;
+        width: 40%;
         padding-left: 5%;
         padding-right: 5%;
     }
     #user-friends{
         display: flex;
         flex-direction: column;
-        width: 30%;
+        width: 40%;
         padding: 10px;
-        text-align: center;
+        padding-left: 5vw;
+        text-align: left;
         border-left: 1px solid lightgrey;
         min-height: 100vh;
 
