@@ -26,6 +26,12 @@
             //telling everyone in the room that xyz user has joined
             io.in(data.chatroom).emit('user_joined', data);
         })
+
+
+        //detect send_message and broadcast to everyone in the room
+        socket.on('send_message', function(data){
+          io.in(data.chatroom).emit('receive_message', data);
+        });
     });
 
  }
